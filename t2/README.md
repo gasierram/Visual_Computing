@@ -40,7 +40,7 @@ Complete la tabla:
 Describa los resultados obtenidos. En el caso de anti-aliasing describir las técnicas exploradas, citando las referencias.
 
 - Resultados obtenidos:
-![Con titulo](https://github.com/gasierram/Raster_ws/blob/master/images/result.PNG "Rasterización del triangulo")
+![Con titulo](https://github.com/gasierram/cv/blob/master/t2/images/result.PNG "Rasterización del triangulo")
 
 - Anti-aliasing:
 Subdividiendo cada píxel en n zonas. La intensidad del color es proporcional al numero de zonas que pertenecen al triangulo.
