@@ -42,7 +42,8 @@ Describa los resultados obtenidos. En el caso de anti-aliasing describir las té
 - Resultados obtenidos:
 ![Con titulo](https://github.com/gasierram/cv/blob/master/t2/images/result.PNG "Rasterización del triangulo")
 
-- Dificultades:
+## Dificultades:
+
 * No tener información clara de cómo se debe instalar la librería.
 * Tarda un tiempo entender el codigo de la libreria para aprovechar su uso.
 * Saber cuál es el punto adecuado para realizar los cálculos con base en la teoría.
