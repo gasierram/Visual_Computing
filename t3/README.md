@@ -1,4 +1,4 @@
-    # Taller de representación
+# Taller de representación
 
 ## Propósitos
 

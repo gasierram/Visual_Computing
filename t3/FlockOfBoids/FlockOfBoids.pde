@@ -5,7 +5,7 @@
  * This example displays the famous artificial life program "Boids", developed by
  * Craig Reynolds in 1986 [1] and then adapted to Processing by Matt Wetmore in
  * 2010 (https://www.openprocessing.org/sketch/6910#), in 'third person' eye mode.
- * The Boid under the mouse will be colored blue. If you click on a boid it will
+ * The Boid underivada the mouse will be colored blue. If you click on a boid it will
  * be selected as the scene avatar for the eye to follow it.
  *
  * 1. Reynolds, C. W. Flocks, Herds and Schools: A Distributed Behavioral Model. 87.
