@@ -1,28 +1,14 @@
-import java.util.Map;
-import java.util.List;
-
 class Boid {
   public Frame frame;
   // fields
-  Vector position, velocity, acceleration, alignment, cohesion, separation; // position, velocity, and acceleration in a vector datatype
-   
+  Vector position, velocity, acceleration, alignment, cohesion, separation; // position, velocity, and acceleration in
+  // a vector datatype
   float neighborhoodRadius; // radius in which it looks for fellow boids
   float maxSpeed = 4; // maximum magnitude for the velocity vector
   float maxSteerForce = .1f; // maximum magnitude of the steering vector
   float sc = 3; // scale factor for the render of the boid
   float flap = 0;
   float t = 0;
-  
-  int representation = 1; // 0 is Face vertex , 1 is vertex vertex
-  int renderMode = 0; // 0 in inmediate, 1 es retained
-  
-  List<Face> faceList = new ArrayList<Face>(); //list face-vertex face
-  List<Vector> vertexList = new ArrayList<Vector>(); //list face-vertex vertices
-  
-  Face f1,f2,f3,f4; // tetrahedron faces
-  Vector a1, a2, a3, a4;// tetrahedron vertices
-  
-  PShape shapeBoid;
 
   Boid(Vector inPos) {
     position = new Vector();
@@ -165,138 +151,80 @@ class Boid {
       stroke(color(255, 0, 0));
       fill(color(255, 0, 0));
     }
+
+    //draw boid
+    beginShape(TRIANGLES);
     
-    
-    System.out.println("Representation " + representation);
-    System.out.println("renderMode " + renderMode);
-        initializeMeshValues();
-    createMeshAndRender();
-    setNullUnnecesaryReferences();
-    if (renderMode == 1){
-      display();
-    }
-  }
+    if(one){
+      /*
+      vertex(3 * sc, 0, 0);
+      vertex(-3 * sc, 2 * sc, 0);
+      vertex(-3 * sc, -2 * sc, 0);
   
-  public void createMeshAndRender(){
-    switch(this.representation){
+      vertex(3 * sc, 0, 0);
+      vertex(-3 * sc, 2 * sc, 0);
+      vertex(-3 * sc, 0, 2 * sc);
+  
+      vertex(3 * sc, 0, 0);
+      vertex(-3 * sc, 0, 2 * sc);
+      vertex(-3 * sc, -2 * sc, 0);
+  
+      vertex(-3 * sc, 0, 2 * sc);
+      vertex(-3 * sc, 2 * sc, 0);
+      vertex(-3 * sc, -2 * sc, 0);
+      */
+      vertex(2 * sc, 0, 2 * sc);     //  6, 0,6
+      vertex(0, 0, 3 * sc);          //  0, 0,9
+      vertex(0, sc, 2 * sc);         //  0, 3,6
       
-      case 0://Face vertex
-        
-        Map <Vector, Face[]> neighbor_faces = new HashMap<Vector, Face[]>();
-        neighbor_faces.put( vertexList.get(0), new Face[]{f2, f3, f4});
-        neighbor_faces.put( vertexList.get(1), new Face[]{f1, f3, f4});
-        neighbor_faces.put( vertexList.get(2), new Face[]{f1, f2, f4});
-        neighbor_faces.put( vertexList.get(3), new Face[]{f2, f3, f4});            
-        
-        if(this.renderMode == 1){ //  MODE RETAINED
-           PShape shapeFace = createShape();
-           shapeFace.beginShape();
-           for(Face face : faceList) {
-                shapeFace.vertex(face.v1.x(), face.v1.y(), face.v1.z());
-                shapeFace.vertex(face.v2.x(), face.v2.y(), face.v2.z());
-                shapeFace.vertex(face.v3.x(), face.v3.y(), face.v3.z());
-            }
-          shapeFace.endShape();
-          this.shapeBoid = shapeFace;          
-        } else { // MODE INMEDIATE  
-           for(Face face : faceList) {
-              beginShape(TRIANGLE_STRIP); 
-                vertex(face.v1.x(),face.v1.y(),face.v1.z());
-                vertex(face.v2.x(),face.v2.y(),face.v2.z());
-                vertex(face.v3.x(),face.v3.y(),face.v3.z());
-              endShape();
-           }             
-        }
-
-      break;
+      vertex(2 * sc, 0, 2 * sc);     //  6, 0,6
+      vertex(0, 0, 3 * sc);          //  0, 0,9
+      vertex(0, -sc, 2 * sc);        //  0,-3,6
       
-      case 1: //vertex-vertex
-        Map <Integer, Integer[]> neighbors_list = new HashMap<Integer, Integer[]>();
-        neighbors_list.put( 0, new Integer[]{1, 2, 3});
-        neighbors_list.put( 1, new Integer[]{0, 2, 3});
-        neighbors_list.put( 2, new Integer[]{0, 1, 3});
-        neighbors_list.put( 3, new Integer[]{0, 1, 2});
-
-        if(this.renderMode == 0){
-          for(int current_vertex: neighbors_list.keySet()){
-              Integer[] current_neighbors = neighbors_list.get(current_vertex);
-              for(int neighbors: current_neighbors){
-                  line(vertexList.get(current_vertex).x(), vertexList.get(current_vertex).y(), vertexList.get(current_vertex).z(), vertexList.get(neighbors).x(),vertexList.get(neighbors).y(),vertexList.get(neighbors).z());
-              }
-          }
-        }
-        else{
-          PShape shapeVertex = createShape();;
-          shapeVertex.beginShape(TRIANGLE_STRIP);
-          for(int current_vertex: neighbors_list.keySet()){
-              Integer[] current_neighbors = neighbors_list.entrySet().iterator().next().getValue();
-              for(int neighbors: current_neighbors){
-                  shapeVertex.vertex(vertexList.get(current_vertex).x(), vertexList.get(current_vertex).y(), vertexList.get(current_vertex).z());
-                  shapeVertex.vertex(vertexList.get(neighbors).x(),vertexList.get(neighbors).y(),vertexList.get(neighbors).z());
-              }
-          }
-          shapeVertex.endShape();       
-          this.shapeBoid = shapeVertex;
-      }
-      break;    
+      vertex(2 * sc, 0, 2 * sc);     //  6, 0,6
+      vertex(0, 0, sc);              //  0, 0,3
+      vertex(0, sc, 2 * sc);         //  0, 3,6
+      
+      vertex(2 * sc, 0, 2 * sc);     //  6, 0,6
+      vertex(0, 0, sc);              //  0, 0,3
+      vertex(0, -sc, 2 * sc);        //  0,-3,6 
+      
+      vertex(-5 * sc, 0, 2 * sc);    //-15, 0,0
+      vertex(0, 0, 3 * sc);          //  0, 0,9
+      vertex(0, sc, 2 * sc);         //  0, 3,6
+      
+      vertex(-5 * sc, 0, 2 * sc);    //-15, 0,0
+      vertex(0, 0, 3 * sc);          //  0, 0,9
+      vertex(0, -sc, 2 * sc);        //  0,-3,6
+      
+      vertex(-5 * sc, 0, 2 * sc);    //-15, 0,0
+      vertex(0, 0, sc);              //  0, 0,3
+      vertex(0, sc, 2 * sc);         //  0, 3,6
+      
+      vertex(-5 * sc, 0, 2 * sc);    //-15, 0,0
+      vertex(0, 0, sc);              //  0, 0,3
+      vertex(0, -sc, 2 * sc);        //  0,-3,6
       
     }
-    
-  }
+    if(two){
+      vertex(3 * sc, 0, 0);          //  9, 0,0
+      vertex(-3 * sc, 0, 0);         // -9, 0,0
+      vertex(0, 3 * sc, sc);         //  0, 9,3
+      
+      vertex(3 * sc, 0, 0);          //  9, 0,0
+      vertex(-3 * sc, 0, 0);         // -9, 0,0
+      vertex(0, 3 * sc, 3 * sc);     //  0, 9,9
+      
+      vertex(3 * sc, 0, 0);          //  9, 0,0
+      vertex(-3 * sc, 0, 0);         // -9, 0,0
+      vertex(0, -3 * sc, sc);        //  0, 9,3
+      
+      vertex(3 * sc, 0, 0);          //  9, 0,0
+      vertex(-3 * sc, 0, 0);         // -9, 0,0
+      vertex(0, -3 * sc, 3 * sc);    //  0,-9,9
+    }
+    endShape();
 
-  void display(){
-    shape(shapeBoid);
+    popStyle();
   }
-  
-  void setListsToNull(){
-    faceList = null;
-    vertexList = null;
-  }
-  
-  void setFacesToNull(){
-    f1 = null;
-    f2 = null;
-    f3 = null;
-    f4 = null;
-   }
-   
-   void setVertexToNull(){
-     a1 = null;
-     a2 = null;
-     a3 = null;
-     a4 = null;
-   }
-   
-  void setNullUnnecesaryReferences(){
-    setFacesToNull();
-    setVertexToNull();
-  }
-
-  void initializeMeshValues(){
-      a1 = new Vector(3 * sc, 0, 0);
-      a2 = new Vector(-3 * sc, 2 * sc, 0);
-      a3 = new Vector(-3 * sc, -2 * sc, 0);
-      a4 = new Vector(-3 * sc, 0, 2 * sc);
-      addVertexesToList();
-
-      f1 = new Face(a1, a2, a3);
-      f2 = new Face(a1, a2, a4);
-      f3 = new Face(a1, a4, a3);
-      f4 = new Face(a4, a2, a3);
-      addFacesToList();
-  }
-
-  void addFacesToList(){
-      faceList.add(f1);
-      faceList.add(f2);
-      faceList.add(f3);
-      faceList.add(f4);
-  }
-
-   void addVertexesToList(){
-      vertexList.add(a1);
-      vertexList.add(a2);
-      vertexList.add(a3);
-      vertexList.add(a4);
-   }
 }
