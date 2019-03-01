@@ -35,6 +35,9 @@ Jellyfish(boolean vel) {
   } 
   r = 20.0f; //40
   amplitude = r; 
+  
+  position = new Vector();
+  position.set(x,y,z);
   frame = new Frame(scene) {
     // Note that within visit() geometry is defined at the
     // frame local coordinate system.
@@ -42,10 +45,10 @@ Jellyfish(boolean vel) {
     public void visit() {
       if (animate)
         drawJelly();
-      //render();
+      render();
     }
   };
-  frame.setPosition(new Vector(inx,iny,inz));
+  frame.setPosition(new Vector(position.x(), position.y(), position.z()));
 
   this.jxSpeed = 1;
   this.jySpeed = 1; 
@@ -60,8 +63,8 @@ Jellyfish(boolean vel) {
 void drawJelly() 
 {   
   translate (width/2,height/2,zoom);
-  rotx += map(mouseX, 0, width,-0.01,0.01) * HALF_PI;
-  roty += map(mouseY, 0, height,-0.01,0.01) * HALF_PI; 
+  //rotx += map(mouseX, 0, width,-0.01,0.01) * HALF_PI;
+  //roty += map(mouseY, 0, height,-0.01,0.01) * HALF_PI; 
   rotateX(rotx);
   rotateY(roty);
 
@@ -81,14 +84,12 @@ void drawJelly()
   jyRot += noise (-0,002,0.002);
   jzRot += noise (-0.002,0.002);
   rotateY(radians(jyRot));
-  rotateZ(radians(jzRot));
-   inx = inx + 1;
-   iny = iny + 1;
-   inz = inz + 1;
-  position = new Vector();
-  position.set(inx,iny,iny);
+  //rotateZ(radians(jzRot));
+  // inx = inx + 1;
+  // iny = iny + 1;
+  // inz = inz + 1;
   for(int i = 0; i < numSystems; i++) 
-    ps[i].run(inx, iny, inz,r);
+    ps[i].run(inx,iny,inz,r);
     
    
  popMatrix();
@@ -116,6 +117,20 @@ void waveR()
       position.setZ(0);
     if (position.z() < 0)
       position.setZ(flockDepth);
+  }
+  void render(){
+  
+    // highlight boids under the mouse
+    if (scene.trackedFrame("mouseMoved") == frame) {
+      stroke(color(0, 0, 255));
+      fill(color(0, 0, 255));
+    }
+
+    // highlight avatar
+    if (frame ==  avatar) {
+      stroke(color(255, 0, 0));
+      fill(color(255, 0, 0));
+    }
   }
 
 //void mouseDragged () {

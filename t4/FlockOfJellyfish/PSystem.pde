@@ -5,8 +5,6 @@ class PSystem
   ArrayList particles;
   float zP; 
   
-  public Frame frame;
-  
   public PSystem(PVector ps_loc, int num, float th)  
   { 
     this.ps_loc = ps_loc; 

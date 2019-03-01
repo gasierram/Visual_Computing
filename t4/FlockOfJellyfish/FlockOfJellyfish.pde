@@ -42,7 +42,7 @@ Frame avatar;
 boolean animate = true;
 
 //JELLYFISH
-int cantJelly = 2;
+int cantJelly = 1;
 //Jellyfish jelly = new Jellyfish();
 ArrayList<Jellyfish> flockjelly;
 //JELLYFISH
@@ -176,7 +176,9 @@ void mouseMoved(MouseEvent event) {
   if (scene.eye().reference() != null)
     // press shift to move the mouse without looking around
     if (!event.isShiftDown())
-      scene.lookAround();
+      //scene.lookAround();
+      //scene.cast();
+
 }
 
 void mouseWheel(MouseEvent event) {
