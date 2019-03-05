@@ -145,6 +145,7 @@ En la clase **Jellyfish** construimos la medusa junto con su movimiento natural 
       position.set(inx,iny,iny);
       frame.setPosition(position);
 ![Jellfish](https://lh3.googleusercontent.com/lEIPOJvFw3FY_sAMqvWx8kVH51acHMOIQDCPedVY_h9jBGJEj9s_m_MPPqj_4dhfvfRkz5bX1SS1 "Jellfish")
+
 Para implementar la cámara en tercera persona utilizamos un objeto-cámara que sigue a cada una de las medusas y la idea es que la interacción a través del mouse permita la vista de cámara de tercera persona ([Navigation](https://visualcomputing.github.io/Interaction/)) y el control de la aplicación.
 ![Flock](https://lh3.googleusercontent.com/HpGL-TdiNnSf_ojQErXRCRw0paPG7R9ezUzyThqk4Th2U-nJQrPEApjFz2nRADcyrAe7LZHSD1Hp "FlockOfJellfish")  
 
