@@ -94,7 +94,7 @@ void render(){
      if (scene.trackedFrame("mouseMoved") == frame) {
       stroke(color(0, 255, 255));
       fill(color(0, 255, 255));
-    }
+    }  
     
         // highlight avatar
     if (frame ==  avatarJelly) {
@@ -191,7 +191,7 @@ void run()
   Vector positionTemp = new Vector();
   for(int i = 0; i < numSystems; i++) 
     positionTemp = ps[i].run(inx, iny, inz,r);
-  frame.setPosition(positionTemp);  
+  frame.setPosition(positionTemp);
   //frame.setPosition(position);  
    render();
  popMatrix();

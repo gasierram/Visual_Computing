@@ -152,8 +152,12 @@ void thirdPerson() {
 }
 
 void thirdPersonJelly() {
-  scene.eye().setReference(avatarJelly);
-  scene.interpolateTo(avatarJelly);
+  scene.eye().setTranslation(0,300,0);//https://visualcomputing.github.io/frames-javadocs/index.html?frames/processing/Scene.html
+  
+  scene.eye().orbit(new Quaternion(), avatarJelly);//drag for orbit
+  
+  //scene.eye().setReference(avatarJelly);
+  //scene.interpolateTo(avatarJelly);
 }
 
 // Resets the eye
@@ -171,9 +175,9 @@ void mouseClicked() {
   //updateAvatar(scene.track("mouseClicked", mouseX, mouseY));
   updateAvatarJelly(scene.track("mouseClicked", mouseX, mouseY));
   // which is the same as these two lines:
-   scene.track("mouseClicked", mouseX, mouseY);
+   //scene.track("mouseClicked", mouseX, mouseY);
    //updateAvatar(scene.trackedFrame("mouseClicked"));
-   updateAvatarJelly(scene.trackedFrame("mouseClicked"));
+   //updateAvatarJelly(scene.trackedFrame("mouseClicked"));
    //2. Asynchronously
    //which requires updateAvatar(scene.trackedFrame("mouseClicked")) to be called within draw()
    scene.cast("mouseClicked", mouseX, mouseY);
