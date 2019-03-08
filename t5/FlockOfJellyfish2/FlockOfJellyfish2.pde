@@ -1,4 +1,3 @@
-
 /**
 * Flock of Jellyfish 
 * By Felipe Ramos & Alejandro Sierra
@@ -48,7 +47,7 @@ boolean avoidWalls = true;
 boolean one = true;
 boolean two = false;
  // amount of boids to start the program with
-
+PShader toon;
 Frame avatarJelly;
 boolean animate = true;
 
@@ -61,6 +60,9 @@ ArrayList<Jellyfish> flockjelly;
 int zoom;
 void setup() {
   size(800, 720, P3D);
+  toon = loadShader("ToonFrag.glsl", "ToonVert.glsl");
+  toon.set("fraction", 1.0);
+  
   scene = new Scene(this);
   scene.setFrustum(new Vector(0, 0, 0), new Vector(flockWidth, flockHeight, flockDepth));
   scene.fit();
@@ -72,17 +74,46 @@ void setup() {
   for (int i = 0; i < cantJelly; i++)
     flockjelly.add(new Jellyfish());
   interpolator =  new Interpolator(scene);
-  
 }
+
 void draw() {
+
   float  time = (float) millis();
 //  munchShader.set("u_time",time/2000.0);
 //  munchShader.set("u_resolution",1280.0,720.0);
 //   munchShader = loadShader("munchShader.glsl");
 //    shader(munchShader);
+  
   background(224, 94, 28);
-  //ambientLight(128, 128, 128);
-  //directionalLight(255, 255, 255, 0, 1, -100);
+  
+  shader(toon);
+  //background(0);
+  float dirY = (mouseY / float(height) - 0.5) * 2;
+  float dirX = (mouseX / float(width) - 0.5) * 2;
+  directionalLight(204, 204, 204, -dirX, -dirY, -1);
+  //translate(width/2, height/2);
+  sphere(120);
+  //background(0);
+  //translate(width/2, height/2);
+  //rotateY(map(mouseX, 0, width, -PI, PI));
+  //rotateX(map(mouseY, 0, height, -PI, PI));
+  //scale(10);
+  //noFill();
+  stroke(0,255,255);
+  // box(1); 
+  for (float x = 0; x < flockWidth; x+=100) {
+    for (float z = 0; z < flockHeight; z+=100) {
+      pushMatrix();
+      translate(0, flockHeight, 0);
+      translate(x, noise(x+100, z+100), z);
+      scale(1);
+      fill(255*noise(x+100, z+100));
+      noStroke();
+      box(100);
+      popMatrix();
+    }
+  }
+  //sphere(400);
   walls();
   scene.traverse();
 
@@ -92,9 +123,6 @@ void draw() {
   scene.drawPath(interpolator);
   popStyle();
 }
-
-
-
 
 void walls() {
   pushStyle();
