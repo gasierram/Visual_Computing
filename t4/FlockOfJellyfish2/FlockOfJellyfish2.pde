@@ -57,6 +57,16 @@ ArrayList<Jellyfish> flockjelly;
 //PShader munchShader;
 //JELLYFISH
 
+Graph.Type shadowMapType = Graph.Type.ORTHOGRAPHIC;
+Shape[] shapes;
+PGraphics shadowMap;
+PShader depthShader;
+float zNear = 50;
+float zFar = flockDepth;
+int w = 1000;
+int h = 1000;
+
+
 int zoom;
 void setup() {
   size(800, 720, P3D);
@@ -74,6 +84,37 @@ void setup() {
   for (int i = 0; i < cantJelly; i++)
     flockjelly.add(new Jellyfish());
   interpolator =  new Interpolator(scene);
+  
+  scene.setRadius(max(w, h));
+  scene.fit(1);
+  shapes = new Shape[20];
+  for (int i = 0; i < shapes.length; i++) {
+    shapes[i] = new Shape(scene) {
+      @Override
+      public void setGraphics(PGraphics pg) {
+        pg.pushStyle();
+        if (scene.trackedFrame("light") == this) {
+          //Scene.drawAxes(pg, 150);
+          pg.fill(0, scene.isTrackedFrame(this) ? 255 : 0, 255, 120);
+          //Scene.drawFrustum(pg, shadowMap, shadowMapType, this, zNear, zFar);
+        } 
+        pg.popStyle();
+      }
+      @Override
+      public void interact(Object... gesture) {
+      }
+    };
+    shapes[i].randomize();
+    shapes[i].setHighlighting(Shape.Highlighting.NONE);
+  }
+  shadowMap = createGraphics(w / 2, h / 2, P3D);
+  depthShader = loadShader("depth.glsl");
+  depthShader.set("near", zNear);
+  depthShader.set("far", zFar);
+  shadowMap.shader(depthShader);
+
+  scene.setTrackedFrame("light", shapes[(int) random(0, shapes.length - 1)]);
+   scene.trackedFrame("light").setOrientation(new Quaternion(new Vector(0, 0, 1), scene.trackedFrame("light").position()));
 }
 
 void draw() {
@@ -86,7 +127,7 @@ void draw() {
   
   background(224, 94, 28);
   
-  shader(toon);
+  //shader(toon);
   //background(0);
   float dirY = (mouseY / float(height) - 0.5) * 2;
   float dirX = (mouseX / float(width) - 0.5) * 2;
@@ -122,6 +163,23 @@ void draw() {
   stroke(255,0,0);
   scene.drawPath(interpolator);
   popStyle();
+  
+  
+  
+  //  background(75, 25, 15);
+  // 1. Fill in and display front-buffer
+ // scene.traverse();
+  // 2. Fill in shadow map using the light point of view
+  if (scene.trackedFrame("light") != null) {
+    shadowMap.beginDraw();
+    shadowMap.background(140, 160, 125);
+    scene.traverse(shadowMap, shadowMapType, scene.trackedFrame("light"), zNear, zFar);
+    shadowMap.endDraw();
+    // 3. Display shadow map
+    scene.beginHUD();
+    image(shadowMap, w / 2, h / 2);
+    scene.endHUD();
+  }
 }
 
 void walls() {
